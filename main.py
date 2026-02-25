@@ -1,12 +1,14 @@
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
+from typing import List
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 
-@app.get("/greet")
-def greeting(request: Request, time_of_day: str):
+@app.get("/dynamic_items/")
+def dynamic_items(request: Request, item_list: str = ""):
+    items = item_list.split(",")
     return templates.TemplateResponse(
-        "index.html", {"request": request, "time_of_day": time_of_day}
+        "index.html", {"request": request, "items": items}
     )
