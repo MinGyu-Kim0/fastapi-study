@@ -1,20 +1,18 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI, Query
 
 app = FastAPI()
 
 
-class Image(BaseModel):
-    url: str
-    name: str
+@app.get("/users/")
+def read_users(q: str = Query(None, max_length=50)):
+    return {"q": q}
 
 
-class Item(BaseModel):
-    name: str
-    description: str
-    image: Image
+@app.get("/items/")
+def read_items(internal_query: str = Query(None, alias="search")):
+    return {"query_handled": internal_query}
 
 
-@app.post("/items/")
-def create_item(item: Item):
-    return {"item": item.dict()}
+@app.get("/users2/")
+def read_users(q: str = Query(None, deprecated=True)):
+    return {"q": q}
