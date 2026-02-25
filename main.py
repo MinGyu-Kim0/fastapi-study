@@ -1,18 +1,33 @@
-from fastapi import FastAPI, Query
-from typing import List, Dict
+from fastapi import FastAPI
 
 app = FastAPI()
 
 
+@app.get("/")
+def read_root():
+    return {"message": "Hello, FastAPI"}
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int):
+    return {"item_id": item_id}
+
+
 @app.get("/items/")
-# 타입은 List이어야 하고 각각의 요소는 int형이어야 함. List타입 힌트는 Query와 반드시 같이 사용해야함.
-async def read_items(q: List[int] = Query([])):
-    return {"q": q}
+def read_items(skip: int = 0, limit: int = 10):
+    return {"skip": skip, "limit": limit}
 
 
-@app.post("/create-item/")
-async def create_item(item: Dict[str, int]):
-    return item
+@app.post("/items/")
+def create_item(item: dict):
+    return {"item": item}
 
 
-# 실행: uvicorn main:app --reload
+@app.put("/items/{item_id}")
+def update_item(item_id: int, item: dict):
+    return {"item_id": item_id, "updated_item": item}
+
+
+@app.delete("/items/{item_id}")
+def delete_item(item_id: int):
+    return {"message": f"Item {item_id} has been deleted"}
