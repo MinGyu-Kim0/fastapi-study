@@ -1,13 +1,5 @@
-<!doctype html>
-<html>
-  <head>
-    <title>FastAPI & Jinja2 with Dynamic List</title>
-  </head>
-  <body>
-    <ul>
-      {% for item in items %}
-      <li>{{ item }}</li>
-      {% endfor %}
-    </ul>
-  </body>
-</html>
+{% extends "base.html" %} 
+
+{% block content %}
+<p>{{ text }}</p>
+{% endblock %}
